@@ -2,10 +2,16 @@
 version: '3'
 
 services:
-  # frontend:
-  #   image: node
-  #   volumes:
-  #     - ./frontend:/var/www/app
+  frontend:
+    image: node:16-alpine3.15
+    volumes:
+      - ./web-ui:/var/www/app
+      - ./web-ui/node_modules:/var/www/app/node_modules
+    command: /bin/sh -c 'npm install && npm start'
+    ports: 
+      - 4200:4200
+    working_dir: /var/www/app
+
 
   backend:
     image: amazoncorretto:18-alpine3.15
@@ -15,8 +21,8 @@ services:
     volumes:
       - ./api:/var/www/app
       - ./cache:/root/.m2
-    ports:
-      - 8080:8080
+    # ports:
+    #   - 8080:8080
     env_file:
       - .env.dev
     command: ./mvnw spring-boot:run
@@ -26,3 +32,27 @@ services:
     restart: always
     env_file:
       - .env.dev
+    volumes:
+      # - ./db/initializer:/setup
+      - ./data/pg:/var/lib/postgresql/data
+      # - ./db/initializer/init.sh:/docker-entrypoint-initdb.d/init.sh
+  
+  adminer:
+    image: michalhosna/adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    env_file:
+      - .env.dev
+    links:
+      - db
+    depends_on:
+      - db
+
+  cli:
+    image: node:16-alpine3.15
+    volumes:
+      - ./web-ui:/var/www/app
+    working_dir: /var/www/app
+    command: /bin/sh -c 'tail -f /dev/null'
