@@ -14,18 +14,20 @@ services:
 
 
   backend:
-    image: amazoncorretto:18-alpine3.15
+    image: python:3.9-alpine3.15
     depends_on:
       - db
     working_dir: /var/www/app
     volumes:
       - ./api:/var/www/app
-      - ./cache:/root/.m2
+      # - ./cache:/root/.m2
+    environment:
+      - FLASK_APP=__init__.py
     ports:
-      - 8080:8080
-    env_file:
-      - .env.dev
-    command: ./mvnw spring-boot:run
+      - 5000:5000
+    command: sh -c ./run.sh
+    # env_file:
+    #   - .env.dev
 
   db:
     image: postgres:14-alpine3.16

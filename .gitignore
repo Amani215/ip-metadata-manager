@@ -1,3 +1,4 @@
 .env
 cache
 data/pg
+__pycache__
