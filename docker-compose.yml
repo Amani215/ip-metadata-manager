@@ -24,7 +24,8 @@ services:
     environment:
       - FLASK_APP=__init__.py
     ports:
-      - 80:80
+      - 5000:5000
+    expose: [5000]
     command: sh -c ./run.sh
     # env_file:
     #   - .env.dev
