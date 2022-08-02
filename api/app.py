@@ -7,13 +7,14 @@ app=Flask(__name__)
 from model import db
 from model.user import User
 
+db.drop_all()
 db.create_all()
 
 # Add sample user
 
-# guest = User(name='guest')
-# db.session.add(guest)
-# db.session.commit()
+user = User(name='user1', password='pppppppppp')
+db.session.add(user)
+db.session.commit()
 
 #  routing
 from route.crud import crud
