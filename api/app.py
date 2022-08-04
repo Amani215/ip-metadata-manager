@@ -1,5 +1,4 @@
 from flask import Flask
-from route.home import home_api
 
 app=Flask(__name__)
 
@@ -7,14 +6,15 @@ app=Flask(__name__)
 from model import db
 from model.user import User
 
-db.drop_all()
+# db.drop_all()
 db.create_all()
 
 #  routing
-from route.crud import crud
+from route.user import user_api
+from route.auth import auth_api
 
-app.register_blueprint(crud)
-app.register_blueprint(home_api)
+app.register_blueprint(user_api)
+app.register_blueprint(auth_api)
 
 @app.route('/')
 def home():
