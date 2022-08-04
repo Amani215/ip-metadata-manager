@@ -7,7 +7,7 @@ app=Flask(__name__)
 from model import db
 from model.user import User
 
-# db.drop_all()
+db.drop_all()
 db.create_all()
 
 #  routing
