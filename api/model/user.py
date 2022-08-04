@@ -1,5 +1,4 @@
-from bcrypt import checkpw
-from sqlalchemy import Column, Integer, String, true
+from sqlalchemy import Column, Integer, String
 from app import db
 
 class User(db.Model):
