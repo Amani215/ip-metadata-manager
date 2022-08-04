@@ -7,7 +7,7 @@ def create_user(username, password):
     password = hashpw(password.encode('utf-8'), gensalt())
     password = password.decode('utf8')
     user = User(username, password)
-    
+
     try:
         db.session.add(user)
         db.session.commit()
@@ -21,11 +21,6 @@ def get_users():
 
 def get_by_username(name):
     user:User = User.query.filter_by(username=name).one()
-    userObj = {
-            "id":user.id,
-            "username":user.username,
-            "password":user.password 
-            }
     return user
 
 def verify_user(username, password):
