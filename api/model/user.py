@@ -1,3 +1,4 @@
+from bcrypt import checkpw
 from sqlalchemy import Column, Integer, String, true
 from app import db
 

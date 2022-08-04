@@ -23,8 +23,7 @@ def authenticate():
     username = request.form.get('username')
     password = request.form.get('password')
     result = user_service.verify_user(username=username, password=password)
-    # return f'result is: {result}'
     if(result == True):
         return "Authenticated :)"
     else:
-        return "Not authenticated :("
+        return "Not authenticated :(", 401
