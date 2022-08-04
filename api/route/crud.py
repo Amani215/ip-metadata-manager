@@ -14,16 +14,17 @@ def add_user():
     username = request.form.get('username')
     password = request.form.get('password')
     user_response = user_service.create_user(username=username, password=password)
-    if (user_response["error"]):
+    if ("error" in user_response.keys()):
         return user_response, 409
     return user_response
 
-@crud.route('/auth', methods=['GET'])
+@crud.route('/auth', methods=['POST'])
 def authenticate():
     username = request.form.get('username')
     password = request.form.get('password')
     result = user_service.verify_user(username=username, password=password)
-    if(result):
+    # return f'result is: {result}'
+    if(result == True):
         return "Authenticated :)"
     else:
         return "Not authenticated :("
