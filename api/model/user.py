@@ -17,6 +17,5 @@ class User(db.Model):
       """Return object data in easily serializable format"""
       return {
           'id'  : self.id,
-          'username': self.username,
-          'password': self.password
+          'username': self.username
       }

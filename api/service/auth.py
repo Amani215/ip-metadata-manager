@@ -2,7 +2,7 @@ import datetime
 from flask import jsonify
 import jwt
 from model.user import User
-from service.user import verify_user
+from service.user import verify_user, get_by_id
 from app import app
 
 def authenticate_user(username, password):
@@ -13,3 +13,7 @@ def authenticate_user(username, password):
         return jsonify({'token' : token})
     else:
         return result
+
+def get_authorized_user(token:str)->User:
+    user_id = jwt.decode(token.split(" ")[1],app.config['SECRET_KEY'], "HS256")['public_id']
+    return jsonify(get_by_id(user_id).serialize)

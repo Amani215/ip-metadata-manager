@@ -1,9 +1,8 @@
 from functools import wraps
-from flask import Blueprint, make_response
+from flask import Blueprint
 from flask import Blueprint, jsonify, request
 import jwt
 from model.user import User
-import service.user as user_service
 import service.auth as auth_service
 from app import app
 
@@ -36,3 +35,8 @@ def authenticate():
     username = request.json['username']
     password = request.json['password']
     return auth_service.authenticate_user(username=username, password=password)
+
+@auth_api.route('/api/auth/', methods=['GET'])
+def get_authorized_user():
+    token  = request.headers.get('Authorization',type=str)
+    return auth_service.get_authorized_user(token)
