@@ -1,7 +1,11 @@
+import datetime
 from bcrypt import checkpw, gensalt, hashpw
+from flask import jsonify, make_response
+import jwt
 from model.user import User
 from app import db
 from sqlalchemy.exc import SQLAlchemyError
+from app import app
 
 def create_user(username, password):
     password = hashpw(password.encode('utf-8'), gensalt())
@@ -25,4 +29,7 @@ def get_by_username(name):
 
 def verify_user(username, password):
     user: User = get_by_username(username)
-    return checkpw(password.encode('utf-8'), user.password.encode('utf-8'))
+    if checkpw(password.encode('utf-8'), user.password.encode('utf-8')) == True:
+        return user
+    else:
+        return make_response('could not verify',  401, {'Authentication': '"login required"'})

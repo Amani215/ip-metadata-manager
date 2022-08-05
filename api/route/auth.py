@@ -1,9 +1,10 @@
 from functools import wraps
-from flask import Blueprint
+from flask import Blueprint, make_response
 from flask import Blueprint, jsonify, request
 import jwt
 from model.user import User
 import service.user as user_service
+import service.auth as auth_service
 from app import app
 
 auth_api = Blueprint('auth_api',__name__)
@@ -32,10 +33,6 @@ def token_required(f):
 
 @auth_api.route('/api/auth/', methods=['POST'])
 def authenticate():
-    auth_data = request.authorization
-    
-    result = user_service.verify_user(username=auth_data.username, password=auth_data.password)
-    if(result == True):
-        return "Authenticated :)"
-    else:
-        return "Not authenticated :(", 401
+    username = request.json['username']
+    password = request.json['password']
+    return auth_service.authenticate_user(username=username, password=password)
