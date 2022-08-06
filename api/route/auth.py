@@ -38,5 +38,5 @@ def authenticate():
 
 @auth_api.route('/api/auth/', methods=['GET'])
 def get_authorized_user():
-    token  = request.headers.get('Authorization',type=str)
+    token:str  = request.headers.get('Authorization',type=str)
     return auth_service.get_authorized_user(token)

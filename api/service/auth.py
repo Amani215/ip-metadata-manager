@@ -1,19 +1,30 @@
-import datetime
 from flask import jsonify
 import jwt
+from schema.token import TokenSchema
 from model.user import User
 from service.user import verify_user, get_by_id
 from app import app
+from flask import make_response
+
 
 def authenticate_user(username, password):
     result = verify_user(username, password)
 
     if isinstance(result, User):
-        token = jwt.encode({'public_id' : str(result.id), 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=45)}, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'token' : token})
+        token_schema = TokenSchema(str(result.id)).serialize
+        token = jwt.encode(token_schema, app.config['SECRET_KEY'], "HS256")
+        return jsonify({'token': token})
     else:
         return result
 
-def get_authorized_user(token:str)->User:
-    user_id = jwt.decode(token.split(" ")[1],app.config['SECRET_KEY'], "HS256")['public_id']
+
+def get_authorized_user(bearer_token: str) -> User:
+    [bearer, token] = bearer_token.split(" ")
+    if (bearer.upper() != "BEARER"):
+        return make_response('Token is not Bearer token',  401)
+
+    token_dict: dict = jwt.decode(token, app.config['SECRET_KEY'], "HS256")
+    token_schema: TokenSchema = TokenSchema().fromDict(token_dict)
+
+    user_id = token_schema.public_id
     return jsonify(get_by_id(user_id).serialize)
