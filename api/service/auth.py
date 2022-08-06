@@ -4,7 +4,6 @@ from schema.token import TokenSchema
 from model.user import User
 from service.user import verify_user, get_by_id
 from app import app
-from flask import make_response
 
 
 def authenticate_user(username, password):
@@ -21,10 +20,10 @@ def authenticate_user(username, password):
 def get_authorized_user(bearer_token: str) -> User:
     [bearer, token] = bearer_token.split(" ")
     if (bearer.upper() != "BEARER"):
-        return make_response('Token is not Bearer token',  401)
+        raise Exception("Token is not Bearer token")
 
     token_dict: dict = jwt.decode(token, app.config['SECRET_KEY'], "HS256")
     token_schema: TokenSchema = TokenSchema().fromDict(token_dict)
 
     user_id = token_schema.public_id
-    return jsonify(get_by_id(user_id).serialize)
+    return get_by_id(user_id)
