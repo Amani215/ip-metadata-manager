@@ -1,11 +1,16 @@
-from flask import Blueprint
 from flask import Blueprint, jsonify, request
+from app import app
 import service.user as user_service
 
 user_api = Blueprint('user_api',__name__)
 
 @user_api.route('/api/user/', methods = ['GET'])
+@app.get('/api/user')
 def get_users() -> str:
+    """Get all users
+    
+    Returns all the users in the database
+    """
     users = user_service.get_users()
     return jsonify([i.serialize for i in users])
 
