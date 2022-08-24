@@ -8,6 +8,7 @@ import config
 # Create tables
 from model import db
 from model.user import User
+from model.ip_address import IPAddress
 
 #Base.metadata.drop_all(bind=engine)
 # Base.metadata.create_all(bind=engine)
