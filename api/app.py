@@ -18,14 +18,16 @@ from model.ip_address import IPAddress
 # def shutdown_session(exception=None):
 #    db_session.remove()
 
-db.drop_all()
+# db.drop_all()
 db.create_all()
 
 #  routing
 from route.user import user_api
+from route.ip_address import ip_api
 from route.auth import auth_api
 
 app.register_api(user_api)
+app.register_api(ip_api)
 app.register_api(auth_api)
 
 @app.route('/')

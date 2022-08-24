@@ -7,7 +7,7 @@ import uuid
 
 class IPAddress(db.Model):
   id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-  address = Column(String(80), unique=True, nullable=False)
+  address = Column(String(80), nullable=False)
   userID = Column(UUID(as_uuid=True), nullable=False)
 
   def __init__(self, address, username):

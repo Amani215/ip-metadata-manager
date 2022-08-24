@@ -8,7 +8,7 @@ def create_address(address:str, username:str):
     try:
         db.session.add(ip)
         db.session.commit()
-        return {"user_id":ip.id}
+        return {"ip_id":ip.id}
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         return {"error":error}
