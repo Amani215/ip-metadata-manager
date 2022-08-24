@@ -1,7 +1,7 @@
 from bcrypt import checkpw, gensalt, hashpw
 from flask import make_response
 from model.user import User
-from app import db_session
+from app import db
 from sqlalchemy.exc import SQLAlchemyError
 
 def create_user(username, password):
@@ -10,8 +10,8 @@ def create_user(username, password):
     user = User(username, password)
 
     try:
-        db_session.add(user)
-        db_session.commit()
+        db.session.add(user)
+        db.session.commit()
         return {"user_id":user.id}
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])

@@ -6,19 +6,19 @@ app=OpenAPI(__name__, info = info)
 import config
 
 # Create tables
-from model import Base, engine, db_session
+from model import db
 from model.user import User
 
 #Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
-# close session at shutdown
-@app.teardown_appcontext
-def shutdown_session(exception=None):
-   db_session.remove()
+# # close session at shutdown
+# @app.teardown_appcontext
+# def shutdown_session(exception=None):
+#    db_session.remove()
 
-# db.drop_all()
-# db.create_all()
+db.drop_all()
+db.create_all()
 
 #  routing
 from route.user import user_api
