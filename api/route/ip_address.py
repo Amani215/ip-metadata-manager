@@ -12,7 +12,7 @@ ip_tag = Tag(name="IP", description="IP requests")
 @ip_api.route('/api/ip/', methods = ['GET'])
 @app.get('/api/ip', tags=[ip_tag])
 @token_required
-def get_addresses(user:User) -> str:
+def get_addresses(current_user:User) -> str:
 
     """Get all ip addresses
     
@@ -25,7 +25,8 @@ def get_addresses(user:User) -> str:
 
 @ip_api.route('/api/ip/', methods=['POST'])
 @app.post('/api/ip', tags=[ip_tag])
-def add_address():
+@token_required
+def add_address(current_user:User):
     """Add a new ip address
     
     Takes a username and an ip address and returns the new ip object ID.
