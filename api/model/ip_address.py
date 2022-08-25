@@ -9,10 +9,12 @@ class IPAddress(db.Model):
   id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
   address = Column(String(80), nullable=False)
   userID = Column(UUID(as_uuid=True), nullable=False)
+  user:User
 
-  def __init__(self, address, username):
-    self.address = address
-    self.userID  = user_service.get_by_username(username).id
+  def __init__(self, _address, _user:User):
+    self.address = _address
+    self.userID  = _user.id
+    self.user = _user
 
   @property
   def serialize(self):
@@ -20,5 +22,8 @@ class IPAddress(db.Model):
       return {
           'id'  : self.id,
           'address': self.address,
-          'username': self.userID
+          'user': {
+            'id': self.userID,
+            'username': self.user.username
+          }
       }

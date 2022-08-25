@@ -10,14 +10,6 @@ from model import db
 from model.user import User
 from model.ip_address import IPAddress
 
-#Base.metadata.drop_all(bind=engine)
-# Base.metadata.create_all(bind=engine)
-
-# # close session at shutdown
-# @app.teardown_appcontext
-# def shutdown_session(exception=None):
-#    db_session.remove()
-
 # db.drop_all()
 db.create_all()
 
